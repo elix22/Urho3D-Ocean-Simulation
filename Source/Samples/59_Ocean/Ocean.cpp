@@ -72,8 +72,6 @@ Ocean::~Ocean()
 {
     if ( threadProcess_ )
     {
-        threadProcess_->WaitExit();
-
         delete threadProcess_;
         threadProcess_ = NULL;
     }
@@ -146,7 +144,7 @@ void Ocean::HandleUpdate(StringHash eventType, VariantMap& eventData)
 void Ocean::EvaluateWavesFFT() 
 {
     // process FFT
-    float t = elapsedFrameTimer_->GetElapsedTime();
+    float t = elapsedFrameTimer_->GetElapsedTime();// * 2.0f; // increase the wave change rate
     pCOcean->evaluateWavesFFT( t );
 
     // reset process timer
@@ -202,7 +200,6 @@ void Ocean::UpdateVertexBuffer()
         //unlock
         pVbuffer->Unlock();
     }
-
 
     if ( (bbox.Size() - m_BoundingBox.Size()).Length() > 5.0f )
     {
@@ -474,7 +471,8 @@ float cOcean::phillips(int n_prime, int m_prime) {
 	float k_length4 = k_length2 * k_length2;
 
 	float k_dot_w   = k.Normalized().DotProduct( w.Normalized() );
-	float k_dot_w2  = k_dot_w * k_dot_w * k_dot_w * k_dot_w * k_dot_w * k_dot_w;
+    float k3_dot_w2 = k_dot_w * k_dot_w * k_dot_w;
+	float k_dot_w2  = k3_dot_w2 * k3_dot_w2;
 
 	float w_length  = w.Length();
 	float L         = w_length * w_length / g;

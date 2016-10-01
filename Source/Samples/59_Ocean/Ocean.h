@@ -30,6 +30,11 @@ public:
     {
     }
 
+    virtual ~HelperThread()
+    {
+        WaitExit();
+    }
+
     void Start()
     {
         Run();
@@ -54,6 +59,13 @@ public:
         SetFnExit(true);
     }
 
+    bool HasFnExited()
+    {
+        MutexLock lock(mutexLock_);
+        return fnExited_;
+    }
+
+protected:
     void WaitExit()
     {
         SetLooping(false);
@@ -65,13 +77,6 @@ public:
         while (!HasFnExited());
     }
 
-    bool HasFnExited()
-    {
-        MutexLock lock(mutexLock_);
-        return fnExited_;
-    }
-
-protected:
     void SetLooping(bool bset)
     {
         MutexLock lock(mutexLock_);
