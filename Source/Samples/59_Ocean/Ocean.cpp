@@ -233,18 +233,20 @@ void Ocean::MakeMesh(int size, Mesh &mesh)
         }
     }
     
+    // indeces are set for cOcean geometry = false -> set to triangles
     int num = 0;
-    for(int x = 0; x < size-1; x++)
+    for(int x = 0; x < sizen_1; x++)
     {
-        for(int y = 0; y < size-1; y++)
+        for(int y = 0; y < sizen_1; y++)
         {
-            mesh.indices[num++] = x + y * size;
-            mesh.indices[num++] = x + (y+1) * size;
-            mesh.indices[num++] = (x+1) + y * size;
-    
-            mesh.indices[num++] = x + (y+1) * size;
-            mesh.indices[num++] = (x+1) + (y+1) * size;
-            mesh.indices[num++] = (x+1) + y * size;
+            int index = x * size + y;
+            mesh.indices[num++] = index;
+            mesh.indices[num++] = index + size;
+            mesh.indices[num++] = index + size + 1;
+
+            mesh.indices[num++] = index;
+            mesh.indices[num++] = index + size + 1;
+            mesh.indices[num++] = index + 1;
         }
     }
 
@@ -370,8 +372,8 @@ void Ocean::DbgRender()
 
 //=============================================================================
 //=============================================================================
-cOcean::cOcean(const int N, const float A, const Vector2 w, const float length, const bool geometry) :
-	g(GRAVITY), geometry(geometry), N(N), Nplus1(N+1), A(A), w(w), length(length),
+cOcean::cOcean(const int N, const float A, const Vector2 w, const float length, const bool _geometry) :
+	g(GRAVITY), geometry(_geometry), N(N), Nplus1(N+1), A(A), w(w), length(length),
 	vertices(0), indices(0), h_tilde(0), h_tilde_slopex(0), h_tilde_slopez(0), h_tilde_dx(0), h_tilde_dz(0), fft(0)
 {
 	h_tilde        = new complex[N*N];
@@ -408,6 +410,8 @@ cOcean::cOcean(const int N, const float A, const Vector2 w, const float length, 
 		}
 	}
 
+    // always use triangles
+    geometry = false;
 	indices_count = 0;
 	for (int m_prime = 0; m_prime < N; m_prime++) {
 		for (int n_prime = 0; n_prime < N; n_prime++) {
