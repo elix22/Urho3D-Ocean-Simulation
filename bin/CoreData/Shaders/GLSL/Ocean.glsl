@@ -64,7 +64,7 @@ void PS()
     vec3 normal = normalize(vNormal);
 	vec3 skyColor = cMatEnvMapColor * textureCube(sEnvCubeMap, reflect(vReflectionVec, normal)).rgb;
 
-    float fresnel = abs( pow(1.0 - clamp(dot(normalize(vEyeVec.xyz), vNormal), 0.0, 1.0), cFresnelPower) );
+    float fresnel = pow(1.0 - clamp(dot(normalize(vEyeVec.xyz), vNormal), 0.0, 1.0), cFresnelPower);
     //vec3 refractColor = texture2D(sEnvMap, refractUV).rgb * cWaterTint;
     //vec3 reflectColor = texture2D(sDiffMap, reflectUV).rgb;
 
