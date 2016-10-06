@@ -178,11 +178,7 @@ void Water::CreateScene()
 
     m_pStaticModelOcean = oceanNode_->CreateComponent<DStaticModel>();
     m_pStaticModelOcean->SetModel( m_pOcean->GetOceanModel() );
-    #ifdef URHO3D_OPENGL
     m_pStaticModelOcean->SetMaterial(cache->GetResource<Material>("Ocean/MatOcean.xml"));
-    #else
-    m_pStaticModelOcean->SetMaterial(cache->GetResource<Material>("Materials/Water.xml"));
-    #endif
     m_pStaticModelOcean->SetViewMask(0x80000000);
 }
 
@@ -292,7 +288,7 @@ void Water::HandleUpdate(StringHash eventType, VariantMap& eventData)
     // fps text
     fpsCounter_++;
 
-    if ( timerFps_.GetMSec(false) > 1000 )
+    if ( timerFps_.GetMSec(false) >= 1000 )
     {
         fpsText_->SetText(String("fps: ") + String(fpsCounter_));
         fpsCounter_ = 0;
