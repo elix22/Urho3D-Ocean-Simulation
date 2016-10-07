@@ -1,5 +1,5 @@
-//
-// Copyright (c) 2008-2015 the Urho3D project.
+//=============================================================================
+// Copyright (c) 2016 Lumak
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -19,6 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+//=============================================================================
 
 #pragma once
 
@@ -28,35 +29,14 @@
 
 namespace Urho3D
 {
-
 class Node;
 class Scene;
-
 }
 
 class Ocean;
 
 //=============================================================================
 //=============================================================================
-
-//-------------------------------------
-//-------------------------------------
-struct IntVector3
-{
-    IntVector3() : x_(0),y_(0),z_(0){}
-
-    IntVector3(int x, int y, int z) : x_(x),y_(y),z_(z){}
-
-    int x_, y_, z_;
-};
-
-struct ModelGeom
-{
-    PODVector<IntVector3> listTris;
-    PODVector<Vector3>    listVerts;
-    PODVector<Vector3>    listNormals;
-    //PODVector<Vector2>    listUVs;
-};
 class DStaticModel : public StaticModel
 {
     URHO3D_OBJECT(DStaticModel, StaticModel);
