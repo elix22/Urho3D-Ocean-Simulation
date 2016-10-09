@@ -62,9 +62,14 @@ void PS()
     //reflectUV += noise;
 
     vec3 normal = normalize(vNormal);
-	vec3 skyColor = cMatEnvMapColor * textureCube(sEnvCubeMap, reflect(vReflectionVec, normal)).rgb;
+    vec3 skyColor = cMatEnvMapColor * textureCube(sEnvCubeMap, reflect(vReflectionVec, normal)).rgb;
 
-    float fresnel = pow(1.0 - clamp(dot(normalize(vEyeVec.xyz), vNormal), 0.0, 1.0), cFresnelPower);
+    float EDotN = dot(normalize(vEyeVec.xyz), vNormal);
+    float fresnel = pow(1.0 - clamp(EDotN, 0.0, 1.0), cFresnelPower);
+
+    if (EDotN < 0.0)
+        fresnel = 0.5;
+	
     //vec3 refractColor = texture2D(sEnvMap, refractUV).rgb * cWaterTint;
     //vec3 reflectColor = texture2D(sDiffMap, reflectUV).rgb;
 
