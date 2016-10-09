@@ -90,10 +90,15 @@ void PS(
     //if (noise.y < 0.0)
     //    noise.y = 0.0;
     //reflectUV += noise;
-	float3 normal = normalize(iNormal);
-	float3 skyColor = cMatEnvMapColor * SampleCube(EnvCubeMap, reflect(iReflectionVec, normal)).rgb;
+    float3 normal = normalize(iNormal);
+    float3 skyColor = cMatEnvMapColor * SampleCube(EnvCubeMap, reflect(iReflectionVec, normal)).rgb;
 
-    float fresnel = pow(1.0 - saturate(dot(normalize(iEyeVec.xyz), iNormal)), cFresnelPower);
+    float EDotN = dot(normalize(iEyeVec.xyz), iNormal);
+    float fresnel = pow(1.0 - saturate(EDotN), cFresnelPower);
+
+    if (EDotN < 0.0)
+        fresnel = 0.5;
+
     //float3 refractColor = Sample2D(EnvMap, refractUV).rgb * cWaterTint;
     //float3 reflectColor = Sample2D(DiffMap, reflectUV).rgb;
     float3 finalColor = lerp(cWaterTint, skyColor, fresnel);
