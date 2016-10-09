@@ -12,6 +12,7 @@ uniform float cNoiseTiling;
 uniform float cNoiseStrength;
 uniform float cFresnelPower;
 uniform float3 cWaterTint;
+uniform float cWaterHeight;
 
 #else
 
@@ -28,6 +29,7 @@ cbuffer CustomPS : register(b6)
     float cNoiseStrength;
     float cFresnelPower;
     float3 cWaterTint;
+    float cWaterHeight;
 }
 #endif
 
@@ -66,7 +68,7 @@ void VS(float4 iPos : POSITION,
         oClip = dot(oPos, cClipPlane);
     #endif
 
-	oReflectionVec = worldPos - cCameraPos;
+    oReflectionVec = worldPos - cCameraPos;
 }
 
 void PS(
@@ -97,7 +99,10 @@ void PS(
     float fresnel = pow(1.0 - saturate(EDotN), cFresnelPower);
 
     if (EDotN < 0.0)
-        fresnel = 0.5;
+        fresnel = 0.9;
+	
+    if (cCameraPosPS.y < cWaterHeight)
+        fresnel = 0.2;
 
     //float3 refractColor = Sample2D(EnvMap, refractUV).rgb * cWaterTint;
     //float3 reflectColor = Sample2D(DiffMap, reflectUV).rgb;
