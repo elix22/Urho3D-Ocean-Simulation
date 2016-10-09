@@ -27,6 +27,7 @@ uniform float cNoiseTiling;
 uniform float cNoiseStrength;
 uniform float cFresnelPower;
 uniform vec3 cWaterTint;
+uniform float cWaterHeight;
 #endif
 
 void VS()
@@ -46,7 +47,7 @@ void VS()
     vNormal = GetWorldNormal(modelMatrix);
     vEyeVec = vec4(cCameraPos - worldPos, GetDepth(gl_Position));
 
-	vReflectionVec = worldPos - cCameraPos;
+    vReflectionVec = worldPos - cCameraPos;
 }
 
 void PS()
@@ -68,7 +69,10 @@ void PS()
     float fresnel = pow(1.0 - clamp(EDotN, 0.0, 1.0), cFresnelPower);
 
     if (EDotN < 0.0)
-        fresnel = 0.5;
+        fresnel = 0.9;
+    
+    if (cCameraPosPS.y < cWaterHeight)
+        fresnel = 0.2;
 	
     //vec3 refractColor = texture2D(sEnvMap, refractUV).rgb * cWaterTint;
     //vec3 reflectColor = texture2D(sDiffMap, reflectUV).rgb;
