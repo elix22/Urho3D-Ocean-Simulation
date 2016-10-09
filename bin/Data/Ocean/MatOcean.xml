@@ -8,7 +8,8 @@
     <parameter name="NoiseTiling" value="50" />
     <parameter name="NoiseStrength" value="0.02" />
     <parameter name="FresnelPower" value="8" />
+    <parameter name="WaterHeight" value="10.0" />
     <parameter name="WaterTint" value="0.2 0.3 0.6" />
     <parameter name="MatEnvMapColor" value="0.8 0.8 0.8" />
-   	<cull value="none" />
+    <cull value="none" />
 </material>
